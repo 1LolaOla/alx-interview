@@ -1,26 +1,34 @@
 #!/usr/bin/python3
 
+""" Lockboxes """
+
+
 def canUnlockAll(boxes):
-    if not isinstance(boxes, list):
-        return False
+    """
+    - boxes is a list of lists
+    - A key with the same number as a box opens that box
+    - You can assume all keys will be positive integers
+    - The first box boxes[0] is unlocked
+    - Return True if all boxes can be opened, else return False
+    """
+    canUnlockAll = False
+    keys = {0: True}
+    n_boxes = len(boxes)
+    while (True):
 
-    num_boxes = len(boxes)
-    visited = [False] * num_boxes
-    visited[0] = True
+        n_keys = len(keys)
 
-    queue = [0]  # Start with the first box
+        for i in range(len(boxes)):
+            if boxes[i] and keys.get(i, False):
+                for j in boxes[i]:
+                    if j < n_boxes:
+                        keys[j] = True
+                    boxes[i] = None
 
-    while queue:
-        current_box = queue.pop(0)
-        keys = boxes[current_box]
-        for key in keys:
-            if 0 <= key < num_boxes and not visited[key]:
-                visited[key] = True
-                queue.append(key)
+        if not (len(keys) > n_keys):
+            break
 
-    return all(visited)
+    if n_keys == len(boxes):
+        canUnlockAll = True
 
-# Example usage
-if __name__ == "__main__":
-    boxes = [[1], [2], [3], []]
-    print(canUnlockAll(boxes))  # Output: True
+    return canUnlockAll
