@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """Minimum Operations"""
 
-def minOperations(n: int) -> int:
+def minOperations(n):
     """a method that calculates the fewest number of operations needed to
     result n characters in a file"""
 
