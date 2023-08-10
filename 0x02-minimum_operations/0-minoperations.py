@@ -5,8 +5,8 @@ def minOperations(n):
     """a method that calculates the fewest number of operations needed to
     result n characters in a file"""
 
- # all outputs should be at least 2 char: (min, Copy All => Paste)
- if (n < 2):
+    # all outputs should be at least 2 char: (min, Copy All => Paste)
+    if (n < 2):
         return 0
     ops, root = 0, 2
     while root <= n:
