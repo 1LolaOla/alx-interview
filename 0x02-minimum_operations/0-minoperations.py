@@ -6,15 +6,13 @@ def minOperations(n):
     result n characters in a file"""
 
     # all outputs should be at least 2 char: (min, Copy All => Paste)
-    if not isinstance(n, int):
+    if n <= 1:
         return 0
-
-    op = 0
-    i = 2
-    while (i <= n):
-        if not (n % i):
-            n = int(n / i)
-            op += i
-            i = 1
-        i += 1
-     return op
+    # start loop from 2 to n
+    for i in range(2, n + 1):
+        # if n has factors in range
+        if n % i == 0:
+            # recursively check for prime num & add factor
+            return minOperations(int(n / i)) + i
+    # if n is prime
+    return n
