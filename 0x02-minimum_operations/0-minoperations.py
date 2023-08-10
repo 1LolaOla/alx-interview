@@ -6,18 +6,15 @@ def minOperations(n):
     result n characters in a file"""
 
     # all outputs should be at least 2 char: (min, Copy All => Paste)
-    if (n < 2):
+   if not isinstance(n, int):
         return 0
-    ops, root = 0, 2
-    while root <= n:
-        # if n evenly divides by root
-        if n % root == 0:
-            # total even-divisions by root = total operations
-            ops += root
-            # set n to the remainder
-            n = n / root
-            # reduce root to find remaining smaller vals that evenly-divide n
-            root -= 1
-        # increment root until it evenly-divides n
-        root += 1
-    return ops
+
+    op = 0
+    i = 2
+    while (i <= n):
+        if not (n % i):
+            n = int(n / i)
+            op += i
+            i = 1
+        i += 1
+    return op
