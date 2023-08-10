@@ -6,7 +6,7 @@ def minOperations(n):
     result n characters in a file"""
 
     # all outputs should be at least 2 char: (min, Copy All => Paste)
-   if not isinstance(n, int):
+    if not isinstance(n, int):
         return 0
 
     op = 0
@@ -17,4 +17,4 @@ def minOperations(n):
             op += i
             i = 1
         i += 1
-    return op
+     return op
