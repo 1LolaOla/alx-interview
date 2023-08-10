@@ -1,18 +1,21 @@
 #!/usr/bin/python3
-"""Minimum Operations"""
+"""0-minoperations"""
 
-def minOperations(n: int) -> int:
-    """a method that calculates the fewest number of operations needed to
-    result n characters in a file"""
 
+def minOperations(n):
     # all outputs should be at least 2 char: (min, Copy All => Paste)
-    if n <= 1:
+    if (n < 2):
         return 0
-    # start loop from 2 to n
-    for i in range(2, n + 1):
-        # if n has factors in range
-        if n % i == 0:
-            # recursively check for prime num & add factor
-            return minOperations(int(n / i)) + i
-    # if n is prime
-    return n
+    ops, root = 0, 2
+    while root <= n:
+        # if n evenly divides by root
+        if n % root == 0:
+            # total even-divisions by root = total operations
+            ops += root
+            # set n to the remainder
+            n = n / root
+            # reduce root to find remaining smaller vals that evenly-divide n
+            root -= 1
+        # increment root until it evenly-divides n
+        root += 1
+    return ops
