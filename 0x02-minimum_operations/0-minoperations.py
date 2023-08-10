@@ -18,3 +18,4 @@ def minOperations(n):
 # Example usage
 n = 9
 print(minOperations(n))  # Output should be 6
+
