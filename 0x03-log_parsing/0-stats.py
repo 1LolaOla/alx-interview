@@ -1,28 +1,37 @@
 #!/usr/bin/python3
+"""Reads standard input line by line and computes metrics"""
+
 import sys
 
-def print_stats(total_size, status_counts):
-    print("File size: {}".format(total_size))
-    for status_code, count in sorted(status_counts.items()):
-        print("{}: {}".format(status_code, count))
+if __name__ == '__main__':
 
-def main():
-    total_size = 0
-    status_counts = {'200': 0, '301': 0, '400': 0, '401': 0, '403': 0, '404': 0, '405': 0, '500': 0}
+    filesize, count = 0, 0
+    codes = ["200", "301", "400", "401", "403", "404", "405", "500"]
+    stats = {k: 0 for k in codes}
+
+    def print_stats(stats: dict, file_size: int) -> None:
+        print("File size: {:d}".format(filesize))
+        for k, v in sorted(stats.items()):
+            if v:
+                print("{}: {}".format(k, v))
 
     try:
-        for i, line in enumerate(sys.stdin, 1):
-            parts = line.split()
-            if len(parts) == 9:
-                ip, _, _, _, _, status, size = parts[:7]
-                if status in status_counts:
-                    total_size += int(size)
-                    status_counts[status] += 1
-
-            if i % 10 == 0:
-                print_stats(total_size, status_counts)
+        for line in sys.stdin:
+            count += 1
+            data = line.split()
+            try:
+                status_code = data[-2]
+                if status_code in stats:
+                    stats[status_code] += 1
+            except BaseException:
+                pass
+            try:
+                filesize += int(data[-1])
+            except BaseException:
+                pass
+            if count % 10 == 0:
+                print_stats(stats, filesize)
+        print_stats(stats, filesize)
     except KeyboardInterrupt:
-        print_stats(total_size, status_counts)
-
-if __name__ == "__main__":
-    main()
+        print_stats(stats, filesize)
+        raise
