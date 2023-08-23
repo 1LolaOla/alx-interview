@@ -1,25 +1,40 @@
 #!/usr/bin/python3
 """UTF-8 Validation"""
 
-def validUTF8(data) -> bool:
+def get_significant_bits(num):
+    """get significant bits"""
+    set_bits = 0
+    one_two_eight = 128
+    while one_two_eight & num:
+        set_bits += 1
+        one_two_eight = one_two_eight >> 1
+    return set_bits
+
+
+def check_continuation_bytes(num_set_bits, index, data):
     """
-    Returns True if data is a valid UTF-8 encoding, else return False
-    :param data:
-    :return:
+    Check if the continuation bytes of a multi-byte UTF-8 sequence are valid,
+    given the number of set bits.
     """
-    num_bytes = 0
-    for byte in data:
-        mask = 1 << 7
-        if not num_bytes:
-            while byte & mask:
-                num_bytes += 1
-                mask >>= 1
-            if not num_bytes:
-                continue
-            if num_bytes == 1 or num_bytes > 4:
-                return False
+    for i in range(index + 1, index + num_set_bits):
+        if i >= len(data):
+            return False
+        if (data[i] & 0b11000000) != 0b10000000:
+            return False
+    return True
+
+
+def validUTF8(data):
+    """check valid utf8"""
+    i = 0
+    while i < len(data):
+        num_set_bits = get_significant_bits(data[i])
+        if num_set_bits == 1 or num_set_bits > 4:
+            return False
+        if not check_continuation_bytes(num_set_bits, i, data):
+            return False
+        if num_set_bits == 0:
+            i += 1
         else:
-            if byte >> 6 != 0b10:
-                return False
-        num_bytes -= 1
-    return num_bytes == 0
+            i += num_set_bits
+    return True
