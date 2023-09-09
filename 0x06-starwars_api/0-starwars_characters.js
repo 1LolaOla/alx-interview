@@ -9,13 +9,12 @@ async function starwarsCharacters (filmId) {
   response = JSON.parse(response);
   const characters = response.characters;
 
-  for (let i = 0; i < characters.length; i++ ) {
+  for (let i = 0; i < characters.length; i++) {
     const urlCharacter = characters[i];
-    let character await (await request (urlCharacter)).body;
+    let character = await (await request(urlCharacter)).body;
     character = JSON.parse(character);
     console.log(character.name);
   }
 }
 
 starwarsCharacters(filmID);
-    
